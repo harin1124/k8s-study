@@ -1,0 +1,26 @@
+# kind 지정
+apiVersion: apps/v1
+kind: Deployment
+
+# 디플로이먼트 이름 지정
+metadata:
+  name: hello-kiamol-4
+
+# 디플로이먼트가 관리대상으로 삼을 레이블 지정 matchLabels.app 이다.
+spec:
+  selector:
+    matchLabels:
+      app: hello-kiamol-4
+
+  # 파드에 대한 정의는 spec.template 부터 시작한다.
+  # 파드의 레이블은 template.metadata.labels.app 으로 디플로이먼트가 관리 대상 명칭과 동일하다.
+  # => 해당 파드는 디플로이먼트가 관리하게 될 것이다.
+  template:
+    metadata:
+      labels:
+        app: hello-kiamol-4
+    # 해당 파드의 컨테이너 이미지를 지정해준다.
+    spec:
+      containers:
+        - name: web
+          image: kiamol/ch02-hello-kiamol
