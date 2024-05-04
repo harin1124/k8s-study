@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: practice-answer-kiamol
+
+spec:
+  selector:
+    matchLabels:
+      app: practice-answer-kiamol
+  template:
+    metadata:
+      labels:
+        app: practice-answer-kiamol
+    spec:
+      containers:
+        - name: web
+          image: kiamol/ch02-whoami
