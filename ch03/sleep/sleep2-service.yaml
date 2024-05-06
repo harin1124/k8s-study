@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+
+# 서비스의 이름이 도메인네임으로 사용된다.
+metadata:
+  name: sleep-2-svc
+
+# 서비스 정의에는 셀렉터와 포트 목록이 포함된되어야 한다.
+spec:
+  selector:
+    app: sleep-2 # app=sleep-2 인 파드를 대상으로 삼는다.
+  ports:
+    - port: 80 # 80번 포트를 주시하다가 파드의 80번 포트로 트래픽을 전달한다.

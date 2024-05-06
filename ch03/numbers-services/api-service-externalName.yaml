@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+
+metadata:
+  # 클러스터 내에서 쓰이는 로컬 도메인 네임
+  name: numbers-api
+  namespace: test
+
+spec:
+  type: ExternalName
+  # 로컬 도메인 네임을 해소할 외부 도메인
+  externalName: raw.githubusercontent.com
+
+# 클러스터 내에서 http://numbers-api 를 요청하면
+# 쿠버네티스 DNS 서버에서 raw.githubusercontent.com 으로 반환하여 준다.

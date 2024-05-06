@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Service
+
+metadata:
+  name: numbers-api
+  namespace: test
+
+spec:
+  # selector 필드가 없으므로 헤드리스 서비스가 된다.
+  type: ClusterIP
+  ports:
+    - port: 80
+---
+apiVersion: v1
+kind: Endpoints
+
+metadata:
+  name: numbers-api
+  namespace: test
+
+subsets:
+  - addresses:
+      # 정적 IP 주소 목록
+      - ip: 192.168.123.234
+    ports:
+      # 각 IP 에서 주시할 포트 목록
+      - port: 80
