@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sleep
+  namespace: test
+spec:
+  selector:
+    matchLabels:
+      app: sleep
+  template:
+    metadata:
+      labels:
+        app: sleep
+    spec:
+      containers:
+        - name: sleep
+          image: kiamol/ch03-sleep
+          # 동일한 항목명이 존재하는 경우, env(환경변수) 값으로 적용된다.
+          envFrom:
+            - configMapRef:
+                name: sleep-config-env-file
+          env:
+            - name: KIAMOL_CHAPTER
+              value: "04"
+            - name: KIAMOL_SECTION
+              valueFrom:
+                configMapKeyRef:
+                  name: sleep-config-literal # 컨피그맵 명
+                  key: kiamol.section        # 컨피그맵 내 항목명(key)
