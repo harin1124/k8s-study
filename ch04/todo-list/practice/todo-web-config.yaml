@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: todo-web-config-dev
+  namespace: test
+data:
+  config.json: |-
+    {
+      "test": 123,
+      "list": ["a", "b", "c"]
+    }
