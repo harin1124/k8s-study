@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pi-proxy
+  namespace: test
+  labels:
+    app: pi-proxy
+spec:
+  selector:
+    matchLabels:
+      app: pi-proxy
+  template:
+    metadata:
+      labels:
+        app: pi-proxy
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.17-alpine
+          ports:
+            - containerPort: 80
+              name: http
+          volumeMounts:
+            - name: config
+              mountPath: "/etc/nginx/"
+              readOnly: true
+            - name: cache-volume
+              mountPath: /data/nginx/cache # 프록시의 캐시 저장 경로
+      volumes:
+        - name: config
+          configMap:
+            name: pi-proxy-configmap
+        - name: cache-volume
+          hostPath:                      # 마치 볼륨의 타입을 지정하는 것으로, 노드의 디렉터리를 사용하게 된다.
+            path: /volumes/nginx/cache   # 사용할 노드의 디렉터리 경로
+            type: DirectoryOrCreate      # 해당 디렉터리가 존재하지 않으면 생성하도록 명시

@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sleep
+  namespace: test
+spec:
+  selector:
+    matchLabels:
+      app: sleep
+  template:
+    metadata:
+      labels:
+        app: sleep
+    spec:
+      containers:
+        - name: sleep
+          image: kiamol/ch03-sleep
+          volumeMounts:
+            - name: node-root           # 마운트할 볼륨명
+              mountPath: /pod-logs      # 마운트 대상 컨테이너 경로
+              subPath: var/log/pods     # 마운트 대상 볼륨 내 경로
+            - name: node-root
+              mountPath: /container-logs
+              subPath: var/log/containers
+      volumes:
+        - name: node-root
+          hostPath:
+            path: /
+            type: Directory
