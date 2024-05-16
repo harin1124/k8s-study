@@ -225,6 +225,40 @@ kubectl get pv
 NAME   CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM               STORAGECLASS   REASON   AGE
 pv01   50Mi       RWO            Retain           Bound    test/postgres-pvc                           10m
 ```
+
+---
+
+## 동적 볼륨 프로비저닝
+- 영구볼륨클레임만 생성하면 그에 맞는 <span style="color:#DF5452">**영구볼륨을 클러스터에서 동적으로 생성**</span>해주는 방식이다.
+- 스토리지 유형을 따로 지정하지 않으면, 기본 유형이 제공된다.<br>
+  `spec.resources.requests.storageClassName` 필드가 없으면 기본 유형이 쓰인다.
+
+### 스토리지 유형 종류
+- `provisioner`
+  - 영구볼륨이 필요해질 때 영구볼륨을 만드는 주체. 플랫폼에 따라 관리 주체가 달라진다.<br>
+    예를 들어 기본 상태의 AKS는 함께 통합된 애저 파일스가 스토리지를 만든다.
+- `reclaimPolicy`
+  - 연결되었던 클레임이 삭제되었을 때 남아 있는 볼륨을 어떻게 처리할지 지정한다.
+  - 볼륨을 함께 삭제할 수 있고, 남겨둘 수도 있다.
+- `volumeBindingMode`
+  - 영구볼륨클레임이 생성된 즉시 바로 영구볼륨을 생성해 연결할지,<br>
+    아니면 해당 클레임을 사용하는 파드가 생성될 때 영구볼륨을 생성할지 선택할 수 있다.
+
+### 동적 영구볼륨클레임 사용법
+```yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-pvc-dynamic
+  namespace: test
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+  ```
+
 ---
 
 ### 참고 도서
