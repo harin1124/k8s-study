@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: sample-spring
+
+server:
+  port: 8088
