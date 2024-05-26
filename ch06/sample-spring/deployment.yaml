@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sample-spring-web
+  namespace: test
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: sample-spring-web
+  template:
+    metadata:
+      labels:
+        app: sample-spring-web
+    spec:
+      containers:
+        - name: web
+          image: docker.io/library/sample-spring:v1
