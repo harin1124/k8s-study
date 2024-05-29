@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: pi-proxy
+  namespace: test
+  labels:
+    kiamol: ch06
+spec:
+  selector:
+    matchLabels:
+      app: pi-proxy
+  template:
+    metadata:
+      labels:
+        app: pi-proxy
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.17-alpine
+          ports:
+            - containerPort: 80
+              name: http
+          volumeMounts:
+            - name: config
+              mountPath: "/etc/nginx/"
+              readOnly: true
+            - name: cache-volume
+              mountPath: /data/nginx/cache
+      volumes:
+        - name: config
+          configMap:
+            name: pi-proxy-configmap
+        - name: cache-volume
+          hostPath:
+            path: /volumes/nginx-cache
+            type: DirectoryOrCreate
+      nodeSelector:    # 특정 노드에서만 파드를 실행하도록 한다.
+        kiamol: ch06   # kiamol=ch06 레이블이 부여된 노드만 대상으로 한다.ㄹ
